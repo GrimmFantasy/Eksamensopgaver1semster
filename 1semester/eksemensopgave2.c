@@ -11,6 +11,7 @@ Software
 int rool_multiple_dies(int, int(*));
 int lower_section(int, int, int(*), int(*));
 int led_efter_ens(int, int, int(*), int(*));
+int ComAndRemove(int, int, int, int(*));
 
 int main()
 {
@@ -91,6 +92,7 @@ int main()
     }
     return 0;
 }
+
 int lower_section(int n, int num, int *teringer, int *lw_arr)
 {
     int pair1[2], *p1 = pair1,
@@ -99,61 +101,42 @@ int lower_section(int n, int num, int *teringer, int *lw_arr)
         four[4],  *p4 = four,
         small_straight[5], *ss = small_straight,
         large_straight[5], *ls = large_straight,
-        chance[n],
-        terning_copy[n],          
+        chance[n],          
         total = 0, i;
     
-    for (i = 0; i < n; i++)
-    {
-        terning_copy[i] = *(teringer + i)
-    }
     
-    if (num == 0)
+    switch (num)
     {
-        led_efter_ens(2, n, p1, teringer);
-        for(i = 0; i < 2; i++)
-        {
-            total = total + *(p1+i);
-        }
+        case 0:
+            led_efter_ens(2, n, p1, teringer);
+            for(i = 0; i < 2; i++)
+            {
+                total = total + *(p1+i);
+            }
+            *(lw_arr + num) = total;
+        break;
 
-        *(lw_arr + num) = total;
+        case 1:
+            led_efter_ens(2, n, p1, teringer);
+
+        default:
+        break;
     }
-    if (num == 1)
-    {
-        led_efter_ens(2, n, p1, teringer);
-    }
-    if (num == 2)
-    {
-        
-    }
-    if (num == 3)
-    {
-        
-    }
-    if (num == 4)
-    {
-        
-    }
-    if (num == 5)
-    {
-        
-    }
-    if (num == 6)
-    {
-        
-    }
-    if (num == 7)
-    {
-        
-    }
-    if (num == 8)
-    {
-        
-    }
+   
+   
 
 
 }
-
+int ComAndRemove(int n, int teringer, int com, int *arr)
+{
+    int terning_copy[n];
+    for (i = 0; i < n; i++)
+    {
+        terning_copy[i] = *(teringer + i)
+        
+    }
+    
+}
 int led_efter_ens(int length, int n, int *arr, int *teringer)
 {
     int i, 
