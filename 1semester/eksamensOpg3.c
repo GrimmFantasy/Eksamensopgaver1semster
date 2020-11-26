@@ -3,8 +3,8 @@
 #include <string.h>
 typedef struct kamp{
     char ugedag[3];
-    int dato[4];
-    int kl[4];
+    char dato[4];
+    char kl[4];
     char hold1[3];
     char hold2[3];
     int score1;
@@ -19,16 +19,29 @@ typedef struct hold{
     int modstannerMaal;
 }hold;
 
-
+void read_file(kamp(*), FILE(*));
 int main(){
     kamp kampArr[128] /*= malloc(128*sizeof(struct kamp))*/;
     hold holdArr[14];
+    FILE *fp = fopen("kampe-2019-2020.txt", "r");
+    
+    if (fp == NULL){
+        printf("Could not read from file\n");
+        return EXIT_FAILURE;
+    }
+
+    printf("Reading file and gatering data.\n");
+    read_file(kampArr, fp);
+    
+    return 0;
+}
+
+/**/
+void read_file(kamp *kampArr, FILE *fp){
     char temp[10];
     int i;
     int j;
-    FILE *fp = fopen("kampe-2019-2020.txt", "r");
-    
-    for(j = 0; j < 1; j++){
+    for(j = 0; j < 128; j++){
         
         
         for (i = 0; i < 10; i++)
@@ -38,20 +51,20 @@ int main(){
             switch (i)
             {
                 case 0:
-                    kampArr[j].ugedag[0] = temp[0];
-                    printf("%s\n", kampArr[j].ugedag);
+                    
+                    strcpy(kampArr[j].ugedag, temp);    
                     break;
                 case 1:
-                    *kampArr[j].dato = temp;
+                    strcpy(kampArr[j].dato,temp);
                     break;
                 case 2:
-                    *kampArr[j].kl = temp;
+                    strcpy(kampArr[j].kl, temp);
                     break;
                 case 3:
-                    *kampArr[j].hold1 = temp;
+                    strcpy(kampArr[j].hold1, temp);
                     break;
                 case 5:
-                    *kampArr[j].hold2 = temp;
+                    strcpy(kampArr[j].hold2, temp);
                     break;
                 case 6:
                     kampArr[j].score1 = atoi(temp);
@@ -67,6 +80,4 @@ int main(){
             }
         }
     }
-    return 0;
 }
-
