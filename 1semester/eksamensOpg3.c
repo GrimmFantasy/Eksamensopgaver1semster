@@ -3,8 +3,8 @@
 #include <string.h>
 typedef struct kamp{
     char ugedag[4];
-    char dato[5];
-    char kl[5];
+    char dato[6];
+    char kl[6];
     char hold1[4];
     char hold2[4];
     int score1;
@@ -22,6 +22,8 @@ typedef struct hold{
 void read_file(kamp(*), FILE(*));
 void create_team(hold(*), kamp(*));
 void filter_team(hold(*), char(*), int(*));
+void score_count(hold(*), kamp(*));
+void search_for_team(int, hold(*), kamp(*));
 
 int main(){
     kamp kampArr[128];
@@ -38,7 +40,7 @@ int main(){
     printf("Creating struct for each team\n");
     create_team(holdArr, kampArr);
     printf("Starting score keeping\n\n");
-
+    score_count(holdArr, kampArr);
     return 0;
 }
 
@@ -58,11 +60,12 @@ void read_file(kamp *kampArr, FILE *fp){
             {
                 case 0:
                     strcpy(kampArr[j].ugedag, temp);
-                    kampArr[j].ugedag[4] = '\0';
+                    kampArr[j].ugedag[3] = '\0';
                     break;
                 case 1:
                     strcpy(kampArr[j].dato,temp);
                     kampArr[j].dato[5] = '\0';
+                    
                     break;
                 case 2:
                     strcpy(kampArr[j].kl, temp);
@@ -70,11 +73,11 @@ void read_file(kamp *kampArr, FILE *fp){
                     break;
                 case 3:
                     strcpy(kampArr[j].hold1, temp);
-                    kampArr[j].hold1[4] = '\0';
+                    kampArr[j].hold1[3] = '\0';
                     break;
                 case 5:
                     strcpy(kampArr[j].hold2, temp);
-                    kampArr[j].hold2[4] = '\0';
+                    kampArr[j].hold2[3] = '\0';
                     break;
                 case 6:
                     kampArr[j].score1 = atoi(temp);
@@ -92,7 +95,8 @@ void read_file(kamp *kampArr, FILE *fp){
     }
 }
 
-/*vi går ud fra at alle hold spiller både på ude bane og hjemme bane*/
+/*vi går ud fra at alle hold spiller både på ude bane og hjemme bane
+Vi antager at alle holder har spillet i de 7 første kampe*/
 void create_team(hold *holdArr, kamp *kampArr){
     
     int i;
@@ -101,6 +105,63 @@ void create_team(hold *holdArr, kamp *kampArr){
     for(i = 0, j = 7; i < 7; i++, j++){
         strcpy(holdArr[i].holdNavn, kampArr[i].hold1);
         strcpy(holdArr[j].holdNavn, kampArr[i].hold2);
+    }
+    
+}
+
+void score_count(hold *holdArr, kamp *kampArr){
+    
+    int i;
+    int j;
+    
+    for(i = 0; i < 128; i++){
+        printf("\n       Dato     kl        Hold       Score    Tilskuer\n");
+        printf("%s   ", kampArr[i].ugedag);
+        printf("%s   ", kampArr[i].dato);
+        printf("%s   ", kampArr[i].kl);
+        printf("%s  -  ", kampArr[i].hold1);
+        printf("%s   ", kampArr[i].hold2);
+        printf("%d  -  ", kampArr[i].score1);
+        printf("%d   ", kampArr[i].score2);
+        printf("%d\n", kampArr[i].tilskuer);
+        search_for_team(i, holdArr, kampArr);
+    }
+}
+
+void search_for_team(int pos, hold *holdArr, kamp *kampArr){
+    
+    int i;
+
+    for ( i = 0; i < 14; i++)
+    {
+        if (kampArr[pos].hold1 == holdArr[i].holdNavn){
+            holdArr[i].scoretMaal = kampArr[pos].score1;
+            holdArr[i].modstannerMaal = kampArr[pos].score2;
+
+            if(kampArr[pos].score1 > kampArr[pos].score2){
+                holdArr[i].point = 3;
+            }
+            if(kampArr[pos].score1 == kampArr[pos].score2){
+                holdArr[i].point = 1;
+            }
+            break;
+        }
+    }
+
+    for ( i = 0; i < 14; i++)
+    {
+        if (kampArr[pos].hold2 == holdArr[i].holdNavn){
+            holdArr[i].scoretMaal = kampArr[pos].score2;
+            holdArr[i].modstannerMaal = kampArr[pos].score1;
+
+            if(kampArr[pos].score2 > kampArr[pos].score1){
+                holdArr[i].point = 3;
+            }
+            if(kampArr[pos].score2 == kampArr[pos].score1){
+                holdArr[i].point = 1;
+            }
+            break;
+        }
     }
     
 }
