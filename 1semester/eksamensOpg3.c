@@ -209,6 +209,17 @@ void leard_bord(hold *holdArr){
                 holdArr[i] = holdArr[i+1];
                 holdArr[i+1] = temp;
             }
+            if(holdArr[i].point == holdArr[i+1].point && i + 1 != 14){
+                
+                if(holdArr[i].scoretMaal > holdArr[i+1].scoretMaal){
+                
+                temp = holdArr[i];
+                holdArr[i] = holdArr[i+1];
+                holdArr[i+1] = temp;
+                }
+            }
+            
+
             
         }
     }
