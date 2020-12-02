@@ -138,15 +138,7 @@ void score_count(hold *holdArr, kamp *kampArr){
     int j;
     
     for(i = 0; i < 128; i++){
-        /*printf("\n       Date     kl        Team       Score    Tilskuer\n");
-        printf("%s   ", kampArr[i].ugedag);
-        printf("%s   ", kampArr[i].dato);
-        printf("%s   ", kampArr[i].kl);
-        printf("%s  -  ", kampArr[i].hold1);
-        printf("%s   ", kampArr[i].hold2);
-        printf("%d  -  ", kampArr[i].score1);
-        printf("%d   ", kampArr[i].score2);
-        printf("%d\n", kampArr[i].tilskuer);*/
+        
         search_for_team(i, holdArr, kampArr);
     }
 }
